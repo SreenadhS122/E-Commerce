@@ -1,0 +1,134 @@
+<%- include('layouts/userheader.ejs')  %>
+<style>
+    .gradient-custom {
+/* fallback for old browsers */
+background: #cd9cf2;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+}
+</style>
+<section class="h-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-12">
+          <div class="card" style="border-radius: 10px;">
+            <div class="card-header px-4 py-5">
+              <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #a8729a;"><%= user.fullname %></span>!</h5>
+            </div>
+            <div class="card-body p-4">
+              <div class="card shadow-0 border mb-4">
+                <% if(order.length > 0){ %>
+                <% order.forEach(element => { %>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <img src="/newimg/resized/<%= element.product.image  %>"
+                        class="img-fluid" alt="Phone">
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0"><%= element.product.name  %></p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small"><%= element.product.category %></p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small"><%= element.time %></p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small">Qty-<%= element.quantity %></p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small">₹<%= element.price %></p>
+                    </div>
+                    <% if(element.status != "Cancelled") {%>
+                    <div class="col-md-1 text-center d-flex justify-content-center align-items-center">
+                      <a href="/cancelorder/<%= element._id %>"><button onclick="alertBox()" type="button" class="btn btn-primary">
+                        Cancel
+                      </button>
+                    </a>
+                    </div>
+                    <% } %>
+                  </div>
+                  <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                  <div class="row d-flex align-items-center">
+                    <div class="col-md-2">
+                      <p class="text-muted mb-0 small">Track Order</p>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="progress" style="height: 6px; border-radius: 16px;" on>
+                        <div class="progress-bar" role="progressbar" id="orderstatus" style="border-radius: 16px;width: <% if (element.status == "Order Placed") { %>
+                       10%
+                      <% }else if(element.status == "Order Shipped"){ %>60%<% } else if(element.status == "Order Delivered") {%>100%<% }else{ %> 100% <% } %>;  background-color: <% if(element.status == "Cancelled"){%> red <% }else{%>orange<% } %> ; aria-valuenow="0"
+                           aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                      </div>
+                      
+                      <div class="d-flex justify-content-end mb-1">
+                        <h5 class="text-muted mt-2 mb-0 ms-xl-5">Status   -  </h5>
+                        <h5 class=" mt-2 bold mb-0 ms-xl-5"><b><%= element.status %></b></h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+          
+                <% }) %>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <% if(limit != 1){ %>
+                      <li class="page-item"><a class="page-link" href="/myorders/<%= limit-1 %>">Previous</a></li>
+                      <% } %>
+                    <% for(let i=0;i<Math.ceil(total/5);i++) {%>
+                      <li class="page-item"><a class="page-link" href="/myorders/<%= i+1 %>"><%= i+1 %></a></li>
+                      <% } %>
+                      <% if(limit != Math.ceil(total/5)){ %>
+                        <li class="page-item"><a class="page-link" href="/myorders/<%= limit-(-1) %>">Next</a></li>
+                        <% } %>
+                  </ul>
+                </nav>
+                <% }else{ %>
+                  <h1>No Orders</h1>
+                  <% } %>
+              </div>
+              <div class="d-flex justify-content-between pt-2">
+                <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> - ₹<%= totalprice %>/-</p>
+              </div>
+  
+              <div class="d-flex justify-content-between pt-2">
+                <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> 00.00</p>
+              </div>
+  
+              <div class="d-flex justify-content-between">
+                <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> 123</p>
+              </div>
+  
+              <div class="d-flex justify-content-between mb-5">
+                <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
+              </div>
+            </div>
+            <div class="card-footer border-0 px-4 py-5"
+              style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+              <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
+                paid : <span class="h2 mb-0 ms-2"> ₹<%= totalprice %>/-</span></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>  
+  <script>
+    function alertBox(){
+    swal({
+    title: "Cancel order?",
+    text: "Your order has cancelled.",
+    icon: "info"
+  });
+    }
+  </script>
+
+<%- include('layouts/homefooter.ejs')  %>

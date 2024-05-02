@@ -1,0 +1,70 @@
+<%- include('layouts/homeheader')  %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Category</h6>
+                        </div>
+                        <div class="card-body">
+                            <% if (message) { %>
+                                <div class="alert alert-danger" role="alert">
+                                <%= message  %>
+                                </div>
+                                <% } %>
+                            <a href="/addcategory" class="btn btn-primary">Add Category</a>
+                            <div class="table-responsive">
+                                <% if (viewcategory.length > 0) {%>
+                                    <table class="table table-bordered" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%  viewcategory.forEach((element) => {%>
+                                            <tr>
+                                                <td><div style="height: 50px;width: 50px;"><img class="img-fluid" src="/newimg/resized/<%= element.image %>" alt=""></div></td>
+                                                <td><%= element.name %></td>
+                                                <td><%= element.description %></td>
+                                                <td>
+                                                    <a href="/editcategory/<%= element._id  %>" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                                    <a href="/deletecategory/<%= element._id %>" class="delete" ><i class="material-icons" data-toggle="tooltip"title="Delete">&#xE872;</i></a>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <% if(limit !=1){ %>
+                                                <li class="page-item"><a class="page-link" href="/category/<%= limit-1 %>">Previous</a></li>
+                                               <% } %>
+                                             <% for(let i=0;i<Math.ceil(total/5);i++) {%>
+                                               <li class="page-item"><a class="page-link" href="/category/<%= i+1 %>"><%= i+1 %></a></li>
+                                               <% } %>
+                                               <% if(limit != Math.ceil(total/5)){ %>
+                                                <li class="page-item"><a class="page-link" href="/category/<%= limit-(-1) %>">Next</a></li>
+                                                <% } %>
+                                        </ul>
+                                      </nav>
+                                    <% } else { %>
+                                        <h1>No category available</h1>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+<%- include('layouts/homefooter')  %>

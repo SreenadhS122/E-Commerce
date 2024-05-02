@@ -1,0 +1,81 @@
+<%- include('layouts/homeheader')  %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Orders</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <% if (userorder.length > 0) {%>
+                                    <table class="table table-bordered" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer Name</th>
+                                                <th>Date</th>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th>Payment Method</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%  userorder.forEach((element) => {%>
+                                            <tr>
+                                                <td><%= element.username %></td>
+                                                <td><%= element.time %></td>
+                                                <td><%= element.product.name %></td>
+                                                <td><%= element.quantity %></td>
+                                                <td><%= element.price %></td>
+                                                <td><%= element.paymentmethod %></td>
+                                                <td>
+                                                    <% if(element.status == "Cancelled" || element.status == "Order Delivered") {%>
+                                                        <h5 style="color: red;"><%= element.status %></h5>
+                                                        <% }else { %>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                             <%= element.status %>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                              <a class="dropdown-item" href="/orderstatus/Order Placed/<%= element._id %>">Order Placed</a>
+                                                              <a class="dropdown-item" href="/orderstatus/Order Shipped/<%= element._id %>">Order Shipped</a>
+                                                              <a class="dropdown-item" href="/orderstatus/Order Delivered/<%= element._id %>">Order Delivered</a>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <% if(limit != 1){ %>
+                                                <li class="page-item"><a class="page-link" href="/userorders/<%= limit-1 %>">Previous</a></li>
+                                                <% } %>
+                                            <% for(let i=0;i<Math.ceil(total/10);i++) {%>
+                                              <li class="page-item"><a class="page-link" href="/userorders/<%= i+1 %>"><%= i+1 %></a></li>
+                                              <% } %>
+                                              <% if(limit != Math.ceil(total/10)){ %>
+                                             <li class="page-item"><a class="page-link" href="/userorders/<%= limit-(-1) %>">Next</a></li>
+                                            <% } %>
+                                        </ul>
+                                      </nav>
+                                    <% } else { %>
+                                        <h1>No Orders available</h1>
+                                    <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+<%- include('layouts/homefooter')  %>

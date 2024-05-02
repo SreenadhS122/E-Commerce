@@ -1,0 +1,75 @@
+<%- include('layouts/homeheader')  %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+                        </div>
+                        <div class="card-body">
+                            <a href="/adduser" class="btn btn-primary">Add Users</a>
+                            <div class="table-responsive">
+                                <% if (viewusers.length > 0) {%>
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                        <tbody>
+                                            <%  viewusers.forEach((element) => {%>
+                                            <tr>
+                                                <td><%= element.fullname %></td>
+                                                <td><%= element.email %></td>
+                                                <td><%= element.mobile %></td>
+                                                <td>
+                                                    <a href="/blockuser/<%= element._id %>" class="btn btn-danger"><% if (element.isBlocked) { %>
+                                                     Unblock
+                                                <% }else{ %>
+                                                    Block
+                                                <% } %></a>
+                                                    <a href="/edituser/<%= element._id  %>" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                                    <a href="/deleteuser/<%= element._id %>" type="submit" class="btn btn-danger">Delete</a>
+                                                    <!-- <a href="" class="delete" ><i class="material-icons" data-bs-backdrop="modal" data-bs-target="#staticBackdrop" data-toggle="tooltip"title="Delete">&#xE872;</i></a> -->
+                                                </td>
+                                            </tr> 
+                                            <% }) %>
+                                        </tbody>
+                                        </table>
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <% if(limit !=1){ %>
+                                                    <li class="page-item"><a class="page-link" href="/users/<%= limit-1 %>">Previous</a></li>
+                                                   <% } %>
+                                                 <% for(let i=0;i<Math.ceil(total/10);i++) {%>
+                                                   <li class="page-item"><a class="page-link" href="/users/<%= i+1 %>"><%= i+1 %></a></li>
+                                                   <% } %>
+                                                   <% if(limit != Math.ceil(total/10)){ %>
+                                                    <li class="page-item"><a class="page-link" href="/users/<%= limit-(-1) %>">Next</a></li>
+                                                     <% } %>
+                                            </ul>
+                                          </nav>
+                                    <% } else { %>
+                                        <h1>No users available</h1>
+                                    <% } %>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+<%- include('layouts/homefooter')  %>

@@ -1,0 +1,163 @@
+<%- include('layouts/homeheader.ejs') %>
+<style>
+  .thumb {
+  width: 80px;
+  height: 50px;
+  margin: 0.2em -0.7em 0 0;
+}
+
+.remove_img_preview {
+  position: relative;
+  top: -12px;
+  right: 7px;
+  background: black;
+  color: white;
+  border-radius: 50px;
+  font-size: 0.9em;
+  padding: 0 0.3em 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.remove_img_preview:before {
+  content: "×";
+}
+</style>
+<body class="vh-100" style="background-color: #eee;">
+    <div class="">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                  <% if (message) { %>
+                    <div class="alert alert-danger" role="alert">
+                    <%= message  %>
+                    </div>
+                    <% } %>
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Edit Product</p>
+                  <form action="/editproduct/<%= viewproducts._id %>" method="post" class="mx-1 mx-md-4" enctype="multipart/form-data">
+  
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form3Example1c">Product Name</label>
+                        <input type="text" id="form3Example1c" class="form-control"  name="name" required="true" value="<%= viewproducts.name  %>" maxlength="30"/>
+                      </div>
+  
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form3Example3c" style="display: block;">Category</label>
+                        <select name="category" style="width: 200px;" value>
+                          <% category.forEach(element => { %>
+                            <option style="color: black;" value="<%= element.name %>"><%= element.name %></option>
+                          <% }) %>
+                          <option style="color: black;" value="<%= viewproducts.category %>" selected><%= viewproducts.category %></option>                  
+                      </select>   
+                     </div>
+
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form3Example3c">Price</label>
+                        <input type="text" id="form3Example3c" class="form-control" name="price" required="true" value="<%=  viewproducts.price  %>" maxlength="100"/>
+                      </div>
+  
+                      <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form3Example4c">Quantity</label>
+                        <input type="text" id="form3Example4c" class="form-control" name="quantity" required="true" value="<%=  viewproducts.quantity  %>" maxlength="30"/>
+                    </div>
+
+                    <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="form3Example4c">Description</label>
+                        <input type="text" id="form3Example4c" class="form-control" name="description" required="true" value="<%=  viewproducts.description  %>" maxlength="30"/>
+                    </div>
+                    <% if (viewproducts.image.length < 5) { %>
+                       <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="photos">Image</label>
+                        <input style="outline: none;border: none;" type="file" id="photos" class="form-control" name="image" multiple/>
+                        <div class="d-flex ">
+                           <div id="preview" class="d-flex" style="width: 50px;height: 50px;"></div>
+                        </div>
+                      </div>
+                      <hr>
+                    <% }else{ %>
+                      <p style="color: red;">You can only add 5 images</p>
+                      <% } %>
+                    <div class="d-flex">
+                    <% viewproducts.image.forEach(element => { %>
+                      <div class="">
+                        <div class="" style="height: 50px;width: 50px;"><img class="d-flex img-fluid" src="/newimg/resized/<%= element.filename %>" alt="">
+                        </div>
+                      <% if(viewproducts.image.length > 1) {%>
+                        <div>
+                          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#delete">Delete</button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="<%= element.filename %>" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="<%= element.filename %>">Delete Image</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                Delete Image
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                <a href="/deleteimage/<%= element.filename %>/<%= viewproducts._id %>" class="btn btn-primary">Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <% } %>
+                      </div>
+                     
+                       
+                        <% }) %>
+                        </div>
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-4">
+                      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                    class="img-fluid" alt="Sample image">
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+function handleFileSelect(event) {
+  var input = this;
+  if (input.files && input.files.length) {
+    var filesAmount = input.files.length;
+    for (i = 0; i < filesAmount; i++) {
+      var reader = new FileReader();
+      this.enabled = false
+      reader.onload = (function(e) {
+        var span = document.createElement('span');
+        span.innerHTML = ['<img id="test" class="thumb" src="', e.target.result, '" title="', escape(e.name), '"/><span class="remove_img_preview"></span>'].join('');
+        document.getElementById('preview').insertBefore(span, null);
+      });
+      reader.readAsDataURL(input.files[i]);
+    }
+  }
+  console.log(input.files);
+}
+
+$('#photos').change(handleFileSelect);
+
+$('#preview').on('click', '.remove_img_preview', function() {
+  $(this).parent('span').remove();
+  $(this).val("");
+});
+</script>
+<%- include('layouts/homefooter.ejs') %>

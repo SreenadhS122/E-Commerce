@@ -1,0 +1,57 @@
+<%- include('layouts/homeheader')  %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Coupons</h6>
+                        </div>
+                        <div class="card-body">
+                            <% if (message) { %>
+                                <div class="alert alert-danger" role="alert">
+                                <%= message  %>
+                                </div>
+                                <% } %>
+                            <a href="/addcoupon" class="btn btn-primary">Add Coupon</a>
+                            <div class="table-responsive">
+                                <% if (viewcoupon.length > 0) {%>
+                                    <table class="table table-bordered" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Code</th>
+                                                <th>Discount</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%  viewcoupon.forEach((element) => {%>
+                                            <tr>
+                                                <td><%= element.name %></td>
+                                                <td><%= element.code %></td>
+                                                <td><%= element.discount %>%</td>
+                                                <td>
+                                                    <a href="/editcoupon/<%= element._id  %>" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                                    <a href="/deletecoupon/<%= element._id %>" class="delete" ><i class="material-icons" data-toggle="tooltip"title="Delete">&#xE872;</i></a>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <h1>No Coupon Available</h1>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+<%- include('layouts/homefooter')  %>

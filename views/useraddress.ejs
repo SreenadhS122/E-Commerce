@@ -1,0 +1,36 @@
+<%- include('layouts/userheader.ejs') %>
+                    <!-- User profile  -->
+                    <section style="background-color: #eee;">
+                      <div class="container py-5">
+                        <div class="row">
+                          <div class="col">
+                            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                              <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="/addaddress" class="btn btn-primary">Add Address</a></li>
+                              </ol>
+                            </nav>
+                          </div>
+                        </div>
+                          <div>
+                            <ol class="list-group list-group-numbered">
+                                    <% user.address.forEach(element => { %>
+                                      <div class="d-flex justify-content-between mt-2" >
+                                        <div style="width: 100%;">
+                                           <li class="list-group-item"><%= element %></li>
+                                        </div>
+                                         <a href="/editaddress/<%= element %>"><button class="btn btn btn-primary">Edit</button></a>
+                                         <a href="/deleteaddress/<%= user._id %>/<%= element %>"><button class="btn btn btn-danger">Delete</button></a>
+
+                                      </div>
+                                     
+                                    <% }) %>
+                          </ol>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- Content Row -->
+                  </div>
+            <!-- End of Main Content -->
+
+<%- include('layouts/homefooter.ejs')  %>

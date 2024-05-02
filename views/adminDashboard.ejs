@@ -1,0 +1,228 @@
+<%- include('layouts/homeheader.ejs')  %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+        
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Earnings (Monthly)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹<%= revenue %>/-</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Earnings (Monthly) Card Example -->
+                       
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-secondary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Total Users</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= users %> nos</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Total orders(Monthly)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= monthlyOrders %> nos</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                Total Products</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= products %> nos</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Requests Card Example -->
+                        
+                    </div>
+                    <a href="/report/excel" class="btn btn-primary" >Generate excel</a>
+                    <a href="/report/pdf" class="btn btn-primary" >Generate pdf</a>
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Sales Overview</h6>
+                                    <div>
+                                        <form id="filter4" action="/chart" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn primary text-info">Daily</button>
+                                        </form>
+                                        <form id="filter1" action="/chart" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn primary text-info" >Weekly</button>
+                                        </form>
+                                        <form id="filter2" action="/chart" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn primary text-info">Monthly</button>
+                                        </form>
+                                        <form id="filter3" action="/chart" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn primary text-info">Yearly</button>
+                                        </form>
+                                        
+                                    </div>
+                                   
+                                </div>
+                                <!-- Card Body -->
+                                
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart" width="500" height="140" ></canvas>
+                                    </div>
+                                    <form id="filter5" action="/chart" method="post" style="display: inline;">
+                                            <input id="startDate" type="date" >
+                                            <input id="endDate" type="date" >
+                                        <button type="submit" class="btn btn primary text-info">Submit</button>
+                                    </form>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <h1>Sales</h1>
+                            <% if (userorder.length > 0) {%>
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer Name</th>
+                                            <th>Date</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Payment Method</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%  userorder.forEach((element) => {%>
+                                        <tr>
+                                            <td><%= element.username %></td>
+                                            <td><%= element.time %></td>
+                                            <td><%= element.product.name %></td>
+                                            <td><%= element.quantity %></td>
+                                            <td><%= element.price %></td>
+                                            <td><%= element.paymentmethod %></td>
+                                            <td><%= element.status %></td>
+                                        </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                                <% } else { %>
+                                    <h1>Currently No Sales</h1>
+                                <% } %>
+
+                        </div>
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <!-- <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- Card Body -->
+                                <!-- <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Users
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Products
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Orders
+                                        </span>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Content Column -->
+                       
+
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Illustrations -->
+                            
+                            <!-- Approach -->
+                           
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <%- include('layouts/homefooter.ejs')  %>

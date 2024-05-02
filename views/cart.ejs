@@ -1,0 +1,110 @@
+<%- include('layouts/userheader.ejs') %>
+                  <!-- cart content  -->
+                  <section class="h-100 h-custom" style="background-color: #d2c9ff;">
+                    <div class="container py-5 h-100">
+                      <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-12">
+                          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                              <div class="row g-0">
+                                <div class="col-lg-12">
+                                  <div class="p-5">
+                                    <% if (message) { %>
+                                      <div class="alert alert-danger" role="alert">
+                                      <%= message  %>
+                                      </div>
+                                      <% } %>
+                                    <div class="d-flex justify-content-between align-items-center mb-5">
+                                      <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                      <h6 class="mb-0 text-muted"><%= count %> items</h6>
+                                    </div>
+                                    <hr class="my-4">
+                                    <% if (count>0) { %>
+            
+                                    <% item.forEach(element => { %>
+                                        
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                              <img
+                                                src="/newimg/resized/<%= element.product.image %>"
+                                                class="img-fluid rounded-3" alt="">
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                              <h6 class="text-muted"><%= element.product.category %></h6>
+                                              <h6 class="text-black mb-0"><%= element.product.name %></h6>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                <form action="/cart/<%= element._id %>" method="post" class="d-flex">   
+                                                    <button class="btn btn-link px-2" 
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                <i class="fas fa-minus"></i>
+                                              </button>
+                                            
+                                           
+                                              <input id="form1" min="1" name="quantity" value="<%= element.quantity %>" type="number"
+                                                class="form-control " style="text-align:center;width: 100px;" />
+
+                                           
+                                                <button class="btn btn-link px-2 " 
+                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                <i class="fas fa-plus"></i>
+                                              </button>
+                                            </form>
+                                              
+                                            </div>
+                                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                              
+                                              
+                                                <h6 class="mb-0">₹<%= element.price %>/-</h6>
+                                               
+                                            </div>
+                                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                              <a href="/deletecart/<%= element._id %>" class="text-muted"><i class="fas fa-times"></i></a>
+                                            </div>
+                                          </div>      
+                                    <% }) %>
+                                    <nav aria-label="Page navigation example">
+                                      <ul class="pagination">
+                                        <% if(limit !=1){ %>
+                                           <li class="page-item"><a class="page-link" href="/cart/<%= limit-1 %>">Previous</a></li>
+                                          <% } %>
+                                        <% for(let i=0;i<Math.ceil(count/5);i++) {%>
+                                          <li class="page-item"><a class="page-link" href="/cart/<%= i+1 %>"><%= i+1 %></a></li>
+                                          <% } %>
+                                          <% if(limit != Math.ceil(count/5)){ %>
+                                           <li class="page-item"><a class="page-link" href="/cart/<%= limit-(-1) %>">Next</a></li>
+                                            <% } %>
+                                      </ul>
+                                    </nav>
+                                    <% }else { %>
+                                        <h2>Cart is empty</h2>
+                                    <% } %>
+                                   
+                                    <hr class="my-4">
+                  
+                                    <div class="pt-5">
+                                      <h6 class="mb-0"><a href="/" class="text-body"><i
+                                            class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                                    </div>
+                                    <% if(count>0){ %>
+                                      <div class="d-flex justify-content-end">
+                                        <a href="/buynow" class="btn btn-dark">Buy Now</a>
+                                      </div>
+                                      <% } %>
+                                  </div>
+                                   
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                    <!-- Content Row -->
+                  </div>
+            <!-- End of Main Content -->
+
+
+<%- include('layouts/homefooter.ejs')  %>
